@@ -1,0 +1,19 @@
+*uri.txt*  Utilities to uri encode/decode strings
+
+Author: Shota Sugiura
+
+==============================================================================
+INTRODUCTION                                                             *uri*
+
+URIEncode is a plugin for encoding/decoding uri.
+
+The commands follow the specification of Percent-Encoding mechanism
+described in RFC3986(https://datatracker.ietf.org/doc/html/rfc3986).
+
+COMMANDS                                                        *uri-commands*
+
+:URIEncode {expression}                                           *:URIEncode*
+                        Encode {expression} into percent-encoding.
+
+:URIDecode {expression}                                           *:URIDecode*
+                        Decode percent-encoded {expression}.
