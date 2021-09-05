@@ -5,9 +5,9 @@ Author: Shota Sugiura
 ==============================================================================
 INTRODUCTION                                                             *uri*
 
-URIEncode is a plugin for encoding/decoding uri.
+*uriencode* is a vim plugin for encoding/decoding uri.
 
-The commands follow the specification of Percent-Encoding mechanism
+The commands follow the specification of the Percent-Encoding mechanism
 described in RFC3986(https://datatracker.ietf.org/doc/html/rfc3986).
 
 COMMANDS                                                        *uri-commands*
@@ -17,3 +17,20 @@ COMMANDS                                                        *uri-commands*
 
 :URIDecode {expression}                                           *:URIDecode*
                         Decode percent-encoded {expression}.
+
+KEY MAPPINGS                                                *uri-key-mappings*
+
+<Plug>(uriencode)                                          *<Plug>(uriencode)*
+                        Convert seleced text in |Visual-mode|
+                        into percent-encoded text.
+
+<Plug>(uridecode)                                          *<Plug>(uridecode)*
+                        Decode percent-encoded text seleced in |Visual-mode|.
+
+The following key mappings will be available in |Visual-mode| unless
+|g:uriencode_no_default_key_mappings| is defined:
+
+{lhs}		{rhs}
+--------	---------------------
+ge		<Plug>(uriencode)
+gd		<Plug>(uridecode)
