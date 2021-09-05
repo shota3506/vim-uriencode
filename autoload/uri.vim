@@ -128,3 +128,6 @@ function! uri#bytes2codepoints(bytes) abort
 
   return points
 endfunction
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
