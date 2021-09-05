@@ -1,5 +1,8 @@
 scriptencoding utf-8
 
+let s:save_cpo = &cpo
+set cpo&vim
+
 let s:upperhex = '0123456789ABCDEF'
 
 function! uri#encode(str) abort
@@ -72,3 +75,6 @@ function! uri#unhex(c) abort
 
   return 0
 endfunction
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
