@@ -68,10 +68,8 @@ func s:uridecode() abort
   let out = uri#decode("%20%3F&=%23+%25%21%3C%3E%23%22%7B%7D%7C%5C%5E%5B%5D%60%09:%2F@$%27%28%29%2A%2C%3B")
   call assert_equal(" ?&=#+%!<>#\"{}|\\^[]`\t:/@$'()*,;", out)
 
-  " The case below doesn't succeed.
-  " `list2str` cannot convert some 3-bytes characters.
-  " let out = uri#decode("%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A")
-  " call assert_equal("あいうえお", out)
+  let out = uri#decode("%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A")
+  call assert_equal("あいうえお", out)
 endfunction
 
 let &cpo = s:save_cpo
