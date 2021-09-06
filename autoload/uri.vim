@@ -37,8 +37,8 @@ function! uri#decode(str) abort
     let i = i + 3
   endwhile
 
-  let points = uri#bytes2codepoints(bytes)
-  return list2str(points, 1)
+  let codes = uri#bytes2unicode(bytes)
+  return list2str(codes, 1)
 endfunction
 
 function! uri#escape(c) abort
@@ -77,56 +77,49 @@ function! uri#unhex(c) abort
   return 0
 endfunction
 
-function! uri#bytes2codepoints(bytes) abort
-  let bytes = a:bytes
-  let points = []
+function! uri#bytes2unicode(bytes) abort
+  let codes = []
 
-  let n = len(bytes)
+  let n = len(a:bytes)
   let i = 0
   while i < n
-    " 1-byte
-    let b = bytes[i]
+    let b = a:bytes[i]
     if float2nr(floor(b / 128)) == 0 " >> 7
-      call add(points, b)
+      " 1-byte
+      call add(codes, b)
       let i = i + 1
-      continue
-    endif
-    " 2-bytes
-    if float2nr(floor(b / 32)) == 6 " >> 5
-      if i + 1 >= n || float2nr(floor(bytes[i+1] / 64)) != 10
+    elseif float2nr(floor(b / 32)) == 6 " >> 5
+      " 2-bytes
+      if i + 1 >= n || float2nr(floor(a:bytes[i+1] / 64)) != 10
         throw 'invalid bytes for utf-8'
       endif
-      call add(points, (b - 192) * 64 + (bytes[i+1] - 128))
+      call add(codes, (b - 192) * 64 + (a:bytes[i+1] - 128))
       let i = i + 2
-      continue
-    endif
-    " 3-bytes
-    if float2nr(floor(b / 16)) == 14 " >> 4
+    elseif float2nr(floor(b / 16)) == 14 " >> 4
+      " 3-bytes
       if i + 2 >= n ||
-            \ float2nr(floor(bytes[i+1] / 64)) != 2 ||
-            \ float2nr(floor(bytes[i+2] / 64)) != 2
+            \ float2nr(floor(a:bytes[i+1] / 64)) != 2 ||
+            \ float2nr(floor(a:bytes[i+2] / 64)) != 2
         throw 'invalid bytes for utf-8'
       endif
-      call add(points, (b - 224) * 4096 + (bytes[i+1] - 128) * 64 + (bytes[i+2] - 128))
+      call add(codes, (b - 224) * 4096 + (a:bytes[i+1] - 128) * 64 + (a:bytes[i+2] - 128))
       let i = i + 3
-      continue
-    endif
-    " 4-bytes
-    if float2nr(floor(b / 8)) == 30 " >> 3
+    elseif float2nr(floor(b / 8)) == 30 " >> 3
+      " 4-bytes
       if i + 3 >= n ||
-            \ float2nr(floor(bytes[i+1] / 64)) != 2 ||
-            \ float2nr(floor(bytes[i+2] / 64)) != 2 ||
-            \ float2nr(floor(bytes[i+3] / 64)) != 2
+            \ float2nr(floor(a:bytes[i+1] / 64)) != 2 ||
+            \ float2nr(floor(a:bytes[i+2] / 64)) != 2 ||
+            \ float2nr(floor(a:bytes[i+3] / 64)) != 2
         throw 'invalid bytes for utf-8'
       endif
-      call add(points, (b - 240) * 262144 + (bytes[i+1] - 128) * 4096 + (bytes[i+2] - 128) * 64 + (bytes[i+3] - 128))
+      call add(codes, (b - 240) * 262144 + (a:bytes[i+1] - 128) * 4096 + (a:bytes[i+2] - 128) * 64 + (a:bytes[i+3] - 128))
       let i = i + 4
-      continue
+    else
+      throw 'invalid bytes for utf-8'
     endif
-    throw 'invalid bytes for utf-8'
   endwhile
 
-  return points
+  return codes
 endfunction
 
 let &cpo = s:save_cpo
