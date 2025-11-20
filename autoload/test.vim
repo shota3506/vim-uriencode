@@ -28,7 +28,7 @@ func s:uriencode() abort
   call assert_equal("abc", out)
 
   let out = uri#encode("abc+def")
-  call assert_equal("abc+def", out)
+  call assert_equal("abc%2Bdef", out)
 
   let out = uri#encode("a/b")
   call assert_equal("a%2Fb", out)
@@ -40,7 +40,7 @@ func s:uriencode() abort
   call assert_equal("10%25", out)
 
   let out = uri#encode(" ?&=#+%!<>#\"{}|\\^[]`\t:/@$'()*,;")
-  call assert_equal("%20%3F&=%23+%25%21%3C%3E%23%22%7B%7D%7C%5C%5E%5B%5D%60%09:%2F@$%27%28%29%2A%2C%3B", out)
+  call assert_equal("%20%3F%26%3D%23%2B%25%21%3C%3E%23%22%7B%7D%7C%5C%5E%5B%5D%60%09%3A%2F%40%24%27%28%29%2A%2C%3B", out)
 
   let out = uri#encode("あいうえお")
   call assert_equal("%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A", out)
@@ -53,7 +53,7 @@ func s:uridecode() abort
   let out = uri#decode("abc")
   call assert_equal("abc", out)
 
-  let out = uri#decode("abc+def")
+  let out = uri#decode("abc%2Bdef")
   call assert_equal("abc+def", out)
 
   let out = uri#decode("a%2Fb")
@@ -65,7 +65,7 @@ func s:uridecode() abort
   let out = uri#decode("10%25")
   call assert_equal("10%", out)
 
-  let out = uri#decode("%20%3F&=%23+%25%21%3C%3E%23%22%7B%7D%7C%5C%5E%5B%5D%60%09:%2F@$%27%28%29%2A%2C%3B")
+  let out = uri#decode("%20%3F%26%3D%23%2B%25%21%3C%3E%23%22%7B%7D%7C%5C%5E%5B%5D%60%09%3A%2F%40%24%27%28%29%2A%2C%3B")
   call assert_equal(" ?&=#+%!<>#\"{}|\\^[]`\t:/@$'()*,;", out)
 
   let out = uri#decode("%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A")

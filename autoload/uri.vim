@@ -54,8 +54,7 @@ function! uri#escape(c) abort
     return c
   endif
 
-  if c ==# '-' || c ==# '_' || c ==# '.' || c ==# '~' || c ==# '$'
-    \ || c ==# '&' || c ==# '+' || c ==# ':' || c ==# '=' || c ==# '@'
+  if c ==# '-' || c ==# '_' || c ==# '.' || c ==# '~'
     return c
   endif
 

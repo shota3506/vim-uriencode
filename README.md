@@ -7,21 +7,20 @@ described in [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
 ## Usage
 
-### Encode
+### Using Commands
 
-Select plain text in Visual mode and type `ge` with defauld configuration.
+You can also use the `:URIEncode` and `:URIDecode` commands in two ways:
 
-For example,
+1. **With a visual selection** - Select text in Visual mode and execute `:URIEncode` or `:URIDecode` to replace the selection:
+   ```vim
+   :'<,'>URIEncode
+   ```
 
-    Hello, world!
-
-will be encoded into
-
-    Hello%2C%20world%21
-
-### Decode
-
-Select URI encoded text in Visual mode and type `gd`.
+2. **With an argument** - Pass text as an argument to display the encoded/decoded result:
+   ```vim
+   :URIEncode Hello, world!
+   " Output: Hello%2C%20world%21
+   ```
 
 ## Install
 

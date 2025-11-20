@@ -8,8 +8,30 @@ if exists('g:loaded_uriencode')
 endif
 let g:loaded_uriencode = 1
 
-command! -nargs=1 URIEncode echo uri#encode(<q-args>)
-command! -nargs=1 URIDecode echo uri#decode(<q-args>)
+command! -nargs=* -range URIEncode call s:command_encode(<q-args>, <line1>, <line2>, <range>)
+command! -nargs=* -range URIDecode call s:command_decode(<q-args>, <line1>, <line2>, <range>)
+
+function! s:command_encode(arg, line1, line2, range) abort
+  if a:arg !=# ''
+    echo uri#encode(a:arg)
+  elseif a:range
+    " Use the existing visual mode function which properly handles block selection
+    call s:encode()
+  else
+    echo 'Usage: :[range]URIEncode or :URIEncode <text>'
+  endif
+endfunction
+
+function! s:command_decode(arg, line1, line2, range) abort
+  if a:arg !=# ''
+    echo uri#decode(a:arg)
+  elseif a:range
+    " Use the existing visual mode function which properly handles block selection
+    call s:decode()
+  else
+    echo 'Usage: :[range]URIDecode or :URIDecode <text>'
+  endif
+endfunction
 
 function! s:encode()
   let tmp = @z
@@ -39,17 +61,11 @@ function! s:decode()
   let @z = tmp
 endfunction
 
-vnoremap <silent> <Plug>(uriencode)
+vnoremap <silent> <Plug>(uriencode-encode)
       \ :<C-u>call <SID>encode()<CR>
 
-vnoremap <silent> <Plug>(uridecode)
+vnoremap <silent> <Plug>(uriencode-decode)
       \ :<C-u>call <SID>decode()<CR>
-
-if !exists('g:uriencode_no_default_key_mappings') ||
-      \ !g:uriencode_no_default_key_mappings
-  silent! xmap <unique> ge <Plug>(uriencode)
-  silent! xmap <unique> gd <Plug>(uridecode)
-endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
